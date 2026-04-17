@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Dynamic Font Loader will inject here -->
     <style id="dynamic-style"></style>
 
     <script>
@@ -63,13 +62,10 @@
 </head>
 <body class="min-h-screen relative overflow-x-hidden">
 
-    <!-- Background Canvas -->
     <canvas id="bgCanvas"></canvas>
 
-    <!-- CONTENT ROOT - The Layout changes based on theme -->
     <div id="app-root" class="relative z-10 w-full min-h-screen flex flex-col">
-        <!-- Content injected by JS -->
-    </div>
+        </div>
 
     <script>
         // ==========================================
@@ -224,26 +220,24 @@
                     </div>
 
                     <div class="grid gap-6">
-                        <!-- Token Section -->
                         <div class="relative group">
                             <label class="block text-xs uppercase tracking-widest mb-1 opacity-50">Identity Token</label>
                             <input type="password" id="botToken" placeholder="8096...:AAF..." class="inp w-full p-4 rounded text-lg outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
                         </div>
 
-                        <!-- Selector -->
-                        <div class="flex gap-2">
-                            <button onclick="setMode('name')" id="btn-name" class="flex-1 py-2 opacity-100 border-b-2 border-[var(--accent-color)]">Name</button>
-                            <button onclick="setMode('desc')" id="btn-desc" class="flex-1 py-2 opacity-50">Desc</button>
-                            <button onclick="setMode('about')" id="btn-about" class="flex-1 py-2 opacity-50">About</button>
+                        <div class="grid grid-cols-4 gap-1 md:gap-2">
+                            <button onclick="setMode('name')" id="btn-name" class="py-2 opacity-100 border-b-2 border-[var(--accent-color)] text-sm md:text-base">Name</button>
+                            <button onclick="setMode('desc')" id="btn-desc" class="py-2 opacity-50 text-sm md:text-base">Desc</button>
+                            <button onclick="setMode('about')" id="btn-about" class="py-2 opacity-50 text-sm md:text-base">About</button>
+                            <button onclick="setMode('photo')" id="btn-photo" class="py-2 opacity-50 text-sm md:text-base">Photo</button>
                         </div>
 
-                        <!-- Main Input -->
                         <div class="relative">
                             <label class="block text-xs uppercase tracking-widest mb-1 opacity-50" id="input-label">NEW NAME</label>
                             <textarea id="mainInput" rows="3" class="inp w-full p-4 rounded text-xl" placeholder="Enter new value..."></textarea>
+                            <input type="file" id="imageFile" accept=".jpg, .jpeg, .png" class="inp w-full p-4 rounded text-xl" style="display: none;">
                         </div>
 
-                        <!-- Controls -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                             <button onclick="executeAction('rank')" class="btn py-4 px-6 rounded transition-all font-bold">
                                 ${theme.phrases.submit1}
@@ -254,7 +248,6 @@
                         </div>
                     </div>
 
-                    <!-- Console -->
                     <div class="mt-8 bg-black/50 p-4 rounded font-mono text-xs h-32 overflow-y-auto border border-white/10" id="console">
                         <div class="opacity-50">> System Ready...</div>
                         <div class="opacity-50">> Theme: ${theme.id.toUpperCase()} loaded.</div>
@@ -267,7 +260,7 @@
                     <a href="https://t.me/DefMinindia" class="underline hover:text-[var(--accent-color)]">t.me/DefMinindia</a>
                 </div>
                 <div class="text-xs opacity-40 uppercase tracking-widest border-t border-gray-700 pt-2 inline-block">
-                    ⚠️ BUY A COFFIE FOR HIM CLICK HERE
+                    ⚠️ BUY A COFFEE FOR HIM CLICK HERE
                 </div>
             </footer>
             `;
@@ -282,7 +275,8 @@
         const apiMap = {
             name: { endpoint: 'setMyName', param: 'name', label: 'NEW NAME' },
             desc: { endpoint: 'setMyDescription', param: 'description', label: 'DESCRIPTION (Start)' },
-            about: { endpoint: 'setMyShortDescription', param: 'short_description', label: 'ABOUT (Bio)' }
+            about: { endpoint: 'setMyShortDescription', param: 'short_description', label: 'ABOUT (Bio)' },
+            photo: { endpoint: 'setMyProfilePhoto', param: 'photo', label: 'NEW PROFILE PHOTO' }
         };
 
         window.onload = function() {
@@ -314,15 +308,26 @@
 
         function setMode(mode) {
             editMode = mode;
-            // Reset opacity
-            ['name','desc','about'].forEach(m => {
+            
+            // Reset opacity and styling
+            ['name','desc','about', 'photo'].forEach(m => {
                 const btn = document.getElementById(`btn-${m}`);
                 if(btn) {
                     btn.style.opacity = m === mode ? '1' : '0.5';
                     btn.style.borderBottom = m === mode ? '2px solid var(--accent-color)' : 'none';
                 }
             });
+            
             document.getElementById('input-label').innerText = apiMap[mode].label;
+
+            // Toggle Input vs File manually to preserve your layout bounds
+            if(mode === 'photo') {
+                document.getElementById('mainInput').style.display = 'none';
+                document.getElementById('imageFile').style.display = 'block';
+            } else {
+                document.getElementById('mainInput').style.display = 'block';
+                document.getElementById('imageFile').style.display = 'none';
+            }
         }
 
         function log(msg, isError = false) {
@@ -335,7 +340,6 @@
 
         async function executeAction(type) {
             const token = document.getElementById('botToken').value.trim();
-            const val = document.getElementById('mainInput').value;
 
             if(!token) {
                 log('ERROR: Token Missing', true);
@@ -343,21 +347,46 @@
             }
 
             const conf = apiMap[editMode];
-            const payload = { [conf.param]: val };
-
-            // Rank = Global (No Lang), Show = En (Lang 'en')
-            if(type === 'show') {
-                payload['language_code'] = 'en';
-            }
-
             log(`Sending ${conf.endpoint} [${type.toUpperCase()}]...`);
 
             try {
-                const res = await fetch(`https://api.telegram.org/bot${token}/${conf.endpoint}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
+                let res;
+
+                if (editMode === 'photo') {
+                    // Profile Photo Upload Logic
+                    const file = document.getElementById('imageFile').files[0];
+                    
+                    if (!file) {
+                        log('ERROR: Image file is required.', true);
+                        return;
+                    }
+
+                    const formData = new FormData();
+                    formData.append('photo', JSON.stringify({ type: "static", photo: "attach://pic" }));
+                    formData.append('pic', file);
+
+                    res = await fetch(`https://api.telegram.org/bot${token}/${conf.endpoint}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                } else {
+                    // Standard Text Updates Logic
+                    const val = document.getElementById('mainInput').value;
+                    const payload = { [conf.param]: val };
+
+                    // Rank = Global (No Lang), Show = En (Lang 'en')
+                    if(type === 'show') {
+                        payload['language_code'] = 'en';
+                    }
+
+                    res = await fetch(`https://api.telegram.org/bot${token}/${conf.endpoint}`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(payload)
+                    });
+                }
+                
                 const data = await res.json();
                 
                 if(data.ok) {
@@ -405,5 +434,3 @@
     </script>
 </body>
 </html>
-
-
