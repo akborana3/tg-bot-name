@@ -6,6 +6,7 @@
     <title>Bot Identity Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style id="dynamic-style"></style>
 
@@ -198,6 +199,130 @@
                         ctx.beginPath(); ctx.arc(Math.random()*w, Math.random()*h, Math.random()*1.5, 0, Math.PI*2); ctx.fill();
                     }
                 }
+            },
+            {
+                id: 'cyberpunk',
+                name: 'Night City',
+                fonts: ['https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Teko:wght@500&display=swap'],
+                css: `
+                    :root { --bg-color: #0d0221; --text-color: #0ff; --accent-color: #f0f; --secondary-color: #240046; --panel-bg: rgba(13,2,33,0.85); --font-main: 'Rajdhani', sans-serif; --font-head: 'Teko', sans-serif; }
+                    h1, h2 { text-transform: uppercase; letter-spacing: 2px; text-shadow: 2px 2px 0px #0ff, -2px -2px 0px #f0f; }
+                    .btn { background: #f0f; color: #0d0221; border: 2px solid #0ff; box-shadow: inset 0 0 10px #0ff, 0 0 15px #f0f; text-transform: uppercase; font-family: 'Teko'; font-size: 1.2rem; }
+                    .btn:hover { background: #0ff; color: #0d0221; border-color: #f0f; box-shadow: inset 0 0 10px #f0f, 0 0 15px #0ff; }
+                    .inp { background: rgba(36,0,70,0.5); border: 1px solid #f0f; color: #0ff; border-radius: 0; }
+                    .glass-panel { border-right: 5px solid #0ff; border-left: 5px solid #f0f; border-radius: 0; clip-path: polygon(5% 0, 100% 0, 100% 95%, 95% 100%, 0 100%, 0 5%); }
+                `,
+                phrases: { title: 'NETRUNNER ACCESS', sub: 'Jack in to update ICE', submit1: 'UPLOAD RANK', submit2: 'OVERWRITE SHOW' },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = '#0d0221'; ctx.fillRect(0,0,w,h);
+                    ctx.strokeStyle = 'rgba(0, 255, 255, 0.1)';
+                    ctx.lineWidth = 1;
+                    // Grid lines
+                    for(let i=0; i<w; i+=40) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
+                    for(let i=0; i<h; i+=40) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke(); }
+                    // Neon rain
+                    ctx.fillStyle = 'rgba(255, 0, 255, 0.6)';
+                    for(let i=0; i<20; i++) { ctx.fillRect(Math.random()*w, Math.random()*h, 2, Math.random()*100 + 20); }
+                }
+            },
+            {
+                id: 'synthwave',
+                name: 'Retro 84',
+                fonts: ['https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Varela+Round&display=swap'],
+                css: `
+                    :root { --bg-color: #2b003a; --text-color: #ff9a00; --accent-color: #d902ee; --secondary-color: #1a0024; --panel-bg: rgba(26,0,36,0.9); --font-main: 'Varela Round', sans-serif; --font-head: 'Permanent Marker', cursive; }
+                    h1, h2 { color: #ff9a00; text-shadow: 0 0 10px #ff9a00, 0 0 20px #ff9a00, 0 0 30px #d902ee; }
+                    .btn { background: linear-gradient(180deg, #d902ee, #ff9a00); color: #fff; border: 2px solid #fff; border-radius: 10px; box-shadow: 0 5px 15px rgba(217,2,238,0.5); text-shadow: 1px 1px 2px #000; }
+                    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,154,0,0.7); }
+                    .inp { background: #1a0024; border: 2px solid #d902ee; color: #0ff; border-radius: 8px; }
+                    .glass-panel { background: linear-gradient(135deg, rgba(43,0,58,0.9), rgba(26,0,36,0.9)); border: 1px solid #d902ee; box-shadow: 0 0 40px rgba(217,2,238,0.3); }
+                `,
+                phrases: { title: 'VAPORWAVE DECK', sub: 'Aesthetic Bot Configurations', submit1: 'SET HIGH SCORE', submit2: 'CHANGE TRACK' },
+                renderBg: (ctx, w, h) => {
+                    const grad = ctx.createLinearGradient(0,0,0,h);
+                    grad.addColorStop(0, '#10002b'); grad.addColorStop(0.6, '#3c096c'); grad.addColorStop(1, '#ff9e00');
+                    ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
+
+                    // Sun
+                    ctx.fillStyle = '#ff9e00';
+                    ctx.beginPath(); ctx.arc(w/2, h*0.7, 100, 0, Math.PI*2); ctx.fill();
+
+                    // Horizon Grid
+                    ctx.strokeStyle = 'rgba(217, 2, 238, 0.5)';
+                    ctx.lineWidth = 2;
+                    const horizon = h * 0.7;
+                    for(let i=0; i<w; i+=50) { ctx.beginPath(); ctx.moveTo(w/2, horizon); ctx.lineTo(i, h); ctx.stroke(); }
+                    for(let i=horizon; i<h; i+=(h-i)*0.1) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke(); }
+                }
+            },
+            {
+                id: 'matrix',
+                name: 'The Construct',
+                fonts: ['https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap'],
+                css: `
+                    :root { --bg-color: #000; --text-color: #00ff41; --accent-color: #008f11; --secondary-color: #003b00; --panel-bg: rgba(0,20,0,0.8); --font-main: 'Inconsolata', monospace; --font-head: 'Inconsolata', monospace; }
+                    body { text-shadow: 0 0 5px #00ff41; }
+                    .btn { background: #003b00; color: #00ff41; border: 1px solid #00ff41; font-weight: bold; border-radius: 0; }
+                    .btn:hover { background: #008f11; color: #000; box-shadow: 0 0 10px #00ff41; }
+                    .inp { background: #001100; border: 1px solid #008f11; color: #00ff41; font-family: 'Inconsolata'; }
+                    .glass-panel { border: 1px solid #008f11; background: rgba(0,0,0,0.9); }
+                `,
+                phrases: { title: 'ZION MAINFRAME', sub: 'Wake up, Neo...', submit1: 'LOAD PROTOCOL', submit2: 'ALTER REALITY' },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctx.fillRect(0, 0, w, h);
+                    ctx.fillStyle = '#00ff41'; ctx.font = '16px Inconsolata';
+
+                    if(!window.matrixDrops) {
+                        window.matrixDrops = Array(Math.floor(w/16)).fill(1);
+                    }
+                    if(window.matrixDrops.length !== Math.floor(w/16)) {
+                        window.matrixDrops = Array(Math.floor(w/16)).fill(1);
+                    }
+
+                    for(let i=0; i<window.matrixDrops.length; i++) {
+                        const char = String.fromCharCode(0x30A0 + Math.random() * 96);
+                        ctx.fillText(char, i*16, window.matrixDrops[i]*16);
+                        if(window.matrixDrops[i]*16 > h && Math.random() > 0.975) window.matrixDrops[i] = 0;
+                        window.matrixDrops[i]++;
+                    }
+                }
+            },
+            {
+                id: 'space',
+                name: 'Deep Space',
+                fonts: ['https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Exo+2:wght@300&display=swap'],
+                css: `
+                    :root { --bg-color: #030014; --text-color: #e0e0e0; --accent-color: #00e5ff; --secondary-color: #1a1a2e; --panel-bg: rgba(10,10,25,0.7); --font-main: 'Exo 2', sans-serif; --font-head: 'Orbitron', sans-serif; }
+                    h1, h2 { letter-spacing: 3px; font-weight: 900; }
+                    .btn { background: transparent; color: #00e5ff; border: 2px solid #00e5ff; border-radius: 20px; transition: all 0.3s; }
+                    .btn:hover { background: #00e5ff; color: #030014; box-shadow: 0 0 20px #00e5ff; transform: scale(1.05); }
+                    .inp { background: rgba(0,0,0,0.5); border: 1px solid #1a1a2e; border-bottom: 2px solid #00e5ff; color: #fff; border-radius: 5px; }
+                    .glass-panel { backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,229,255,0.1); }
+                `,
+                phrases: { title: 'STELLAR COMMAND', sub: 'Navigating the Cosmos', submit1: 'WARP JUMP (Rank)', submit2: 'TRANSMIT SIGNAL (Show)' },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = '#030014'; ctx.fillRect(0,0,w,h);
+
+                    if(!window.stars) {
+                        window.stars = [];
+                        for(let i=0; i<150; i++) {
+                            window.stars.push({x: Math.random()*w, y: Math.random()*h, r: Math.random()*2, s: Math.random()*0.5});
+                        }
+                    }
+
+                    ctx.fillStyle = '#fff';
+                    window.stars.forEach(star => {
+                        ctx.beginPath(); ctx.arc(star.x, star.y, star.r, 0, Math.PI*2); ctx.fill();
+                        star.x -= star.s;
+                        if(star.x < 0) { star.x = w; star.y = Math.random()*h; }
+                    });
+
+                    // Nebula effect
+                    const grad = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w/1.5);
+                    grad.addColorStop(0, 'rgba(0, 229, 255, 0.05)');
+                    grad.addColorStop(1, 'transparent');
+                    ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
+                }
             }
         ];
 
@@ -336,6 +461,19 @@
             div.style.color = isError ? '#ff5555' : 'inherit';
             div.innerText = `> ${msg}`;
             con.prepend(div);
+
+            // Also show SweetAlert2 toast
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                icon: isError ? 'error' : 'success',
+                title: msg,
+                background: 'var(--panel-bg)',
+                color: 'var(--text-color)'
+            });
         }
 
         async function executeAction(type) {
@@ -362,8 +500,7 @@
                     }
 
                     const formData = new FormData();
-                    formData.append('photo', JSON.stringify({ type: "static", photo: "attach://pic" }));
-                    formData.append('pic', file);
+                    formData.append('photo', file);
 
                     res = await fetch(`https://api.telegram.org/bot${token}/${conf.endpoint}`, {
                         method: 'POST',
