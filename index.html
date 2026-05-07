@@ -6,6 +6,8 @@
     <title>Bot Identity Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     
     <style id="dynamic-style"></style>
 
@@ -198,6 +200,81 @@
                         ctx.beginPath(); ctx.arc(Math.random()*w, Math.random()*h, Math.random()*1.5, 0, Math.PI*2); ctx.fill();
                     }
                 }
+            },
+            {
+                id: 'matrix',
+                name: 'The Matrix',
+                fonts: ['https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap'],
+                css: `
+                    :root { --bg-color: #000; --text-color: #00ff41; --accent-color: #00ff41; --secondary-color: #003b00; --panel-bg: rgba(0,20,0,0.8); --font-main: 'Share Tech Mono', monospace; --font-head: 'Share Tech Mono', monospace; }
+                    .btn { border: 1px solid #00ff41; background: transparent; text-transform: uppercase; color: #00ff41; }
+                    .btn:hover { background: #00ff41; color: #000; box-shadow: 0 0 10px #00ff41; }
+                    .inp { background: #000; border: 1px solid #00ff41; color: #00ff41; }
+                `,
+                phrases: { title: 'THE CONSTRUCT', sub: 'Wake up, Neo...', submit1: 'ENTER MATRIX (Rank)', submit2: 'JACK IN (Show)' },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctx.fillRect(0,0,w,h);
+                    ctx.fillStyle = '#0f0'; ctx.font = '15px monospace';
+                    for(let i=0; i<w/15; i++) {
+                        if(Math.random()>0.975) ctx.fillText(String.fromCharCode(0x30A0 + Math.random() * 96), i*15, Math.random()*h);
+                    }
+                }
+            },
+            {
+                id: 'cyberpunk',
+                name: 'Night City',
+                fonts: ['https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500&display=swap'],
+                css: `
+                    :root { --bg-color: #0f0a1c; --text-color: #fdf500; --accent-color: #ff003c; --secondary-color: #00f0ff; --panel-bg: rgba(15,10,28,0.9); --font-main: 'Rajdhani', sans-serif; --font-head: 'Orbitron', sans-serif; }
+                    .btn { background: #fdf500; color: #0f0a1c; border-bottom: 4px solid #ff003c; font-weight: bold; text-transform: uppercase; clip-path: polygon(10% 0, 100% 0, 100% 80%, 90% 100%, 0 100%, 0 20%); }
+                    .btn:hover { background: #00f0ff; border-bottom-color: #fdf500; }
+                    .inp { background: #1a102c; border: 1px solid #00f0ff; color: #fdf500; font-family: 'Rajdhani'; }
+                    .glass-panel { border-right: 4px solid #ff003c; border-left: 4px solid #00f0ff; }
+                `,
+                phrases: { title: 'NETRUNNER DECK', sub: 'Prepping ICE breakers...', submit1: 'UPLOAD DAEMON (Rank)', submit2: 'BREACH PROTOCOL (Show)' },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = '#0f0a1c'; ctx.fillRect(0,0,w,h);
+                    ctx.strokeStyle = 'rgba(0, 240, 255, 0.2)';
+                    ctx.lineWidth = 1;
+                    for(let i=0; i<w; i+=50) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke(); }
+                    for(let j=0; j<h; j+=50) { ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(w, j); ctx.stroke(); }
+                }
+            },
+            {
+                id: 'synthwave',
+                name: 'Retro 80s',
+                fonts: ['https://fonts.googleapis.com/css2?family=Monoton&family=Press+Start+2P&display=swap'],
+                css: `
+                    :root { --bg-color: #2b003a; --text-color: #00ffff; --accent-color: #ff00ff; --secondary-color: #ffaa00; --panel-bg: rgba(43,0,58,0.85); --font-main: 'Press Start 2P', cursive; --font-head: 'Monoton', cursive; }
+                    body { background: linear-gradient(to bottom, #000000 0%, #2b003a 100%); }
+                    .btn { border: 2px solid #ff00ff; background: rgba(255,0,255,0.2); color: #00ffff; font-family: 'Press Start 2P'; font-size: 0.8rem; box-shadow: 0 0 10px #ff00ff, inset 0 0 10px #ff00ff; }
+                    .btn:hover { background: #ff00ff; color: #fff; box-shadow: 0 0 20px #ff00ff; }
+                    .inp { background: #000; border: 2px solid #00ffff; color: #ffaa00; font-family: 'Press Start 2P'; font-size: 0.8rem; padding: 15px; }
+                    h2 { text-shadow: 2px 2px #00ffff; }
+                    .glass-panel { border-radius: 0; border: 2px solid #00ffff; box-shadow: 0 0 20px #00ffff; }
+                `,
+                phrases: { title: 'OUTRUN_DRIVE', sub: 'Insert coin to continue', submit1: 'P1 START (Rank)', submit2: 'P2 START (Show)' },
+                renderBg: (ctx, w, h) => {
+                    ctx.clearRect(0,0,w,h);
+                },
+                useParticles: 'synthwave'
+            },
+            {
+                id: 'space',
+                name: 'Deep Space',
+                fonts: ['https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap'],
+                css: `
+                    :root { --bg-color: #020111; --text-color: #e0e0e0; --accent-color: #4a90e2; --secondary-color: #8b9dc3; --panel-bg: rgba(2,1,17,0.8); --font-main: 'Space Mono', monospace; --font-head: 'Space Mono', monospace; }
+                    .btn { background: rgba(74, 144, 226, 0.2); border: 1px solid #4a90e2; color: #fff; border-radius: 30px; letter-spacing: 1px; transition: all 0.4s ease; }
+                    .btn:hover { background: #4a90e2; box-shadow: 0 0 15px #4a90e2; transform: translateY(-2px); }
+                    .inp { background: rgba(255,255,255,0.05); border: 1px solid #8b9dc3; color: #e0e0e0; border-radius: 10px; }
+                    .glass-panel { border-radius: 20px; border: 1px solid rgba(74, 144, 226, 0.3); backdrop-filter: blur(20px); }
+                `,
+                phrases: { title: 'ORBITAL COMMAND', sub: 'Awaiting telemetry...', submit1: 'LAUNCH SEQUENCE (Rank)', submit2: 'ESTABLISH COMMS (Show)' },
+                renderBg: (ctx, w, h) => {
+                    ctx.clearRect(0,0,w,h);
+                },
+                useParticles: 'space'
             }
         ];
 
@@ -272,11 +349,12 @@
         let currentTheme = null;
         let editMode = 'name';
 
+        // Map of available identity API endpoints, including the new profile photo feature
         const apiMap = {
             name: { endpoint: 'setMyName', param: 'name', label: 'NEW NAME' },
             desc: { endpoint: 'setMyDescription', param: 'description', label: 'DESCRIPTION (Start)' },
             about: { endpoint: 'setMyShortDescription', param: 'short_description', label: 'ABOUT (Bio)' },
-            photo: { endpoint: 'setMyProfilePhoto', param: 'photo', label: 'NEW PROFILE PHOTO' }
+            photo: { endpoint: 'setMyProfilePhoto', param: 'photo', label: 'NEW PROFILE PHOTO' } // Added profile picture change using setMyProfilePhoto
         };
 
         window.onload = function() {
@@ -336,6 +414,27 @@
             div.style.color = isError ? '#ff5555' : 'inherit';
             div.innerText = `> ${msg}`;
             con.prepend(div);
+
+            // Show alert for errors or key successes
+            if(isError) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'System Error',
+                    text: msg,
+                    background: 'var(--panel-bg)',
+                    color: 'var(--text-color)',
+                    confirmButtonColor: 'var(--accent-color)'
+                });
+            } else if(msg.includes('SUCCESS')) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Upload Complete',
+                    text: msg,
+                    background: 'var(--panel-bg)',
+                    color: 'var(--text-color)',
+                    confirmButtonColor: 'var(--accent-color)'
+                });
+            }
         }
 
         async function executeAction(type) {
@@ -353,7 +452,7 @@
                 let res;
 
                 if (editMode === 'photo') {
-                    // Profile Photo Upload Logic
+                    // Profile Photo Upload Logic using setMyProfilePhoto
                     const file = document.getElementById('imageFile').files[0];
                     
                     if (!file) {
@@ -361,9 +460,9 @@
                         return;
                     }
 
+                    // Telegram setMyProfilePhoto expects the file directly under the 'photo' field in FormData.
                     const formData = new FormData();
-                    formData.append('photo', JSON.stringify({ type: "static", photo: "attach://pic" }));
-                    formData.append('pic', file);
+                    formData.append('photo', file);
 
                     res = await fetch(`https://api.telegram.org/bot${token}/${conf.endpoint}`, {
                         method: 'POST',
@@ -407,6 +506,29 @@
             const c = document.getElementById('bgCanvas');
             const ctx = c.getContext('2d');
             
+            // Handle particles container dynamically
+            let pdiv = document.getElementById('particles-js');
+            if(currentTheme.useParticles) {
+                if (!pdiv) {
+                    pdiv = document.createElement('div');
+                    pdiv.id = 'particles-js';
+                    pdiv.style.position = 'fixed';
+                    pdiv.style.top = '0';
+                    pdiv.style.left = '0';
+                    pdiv.style.width = '100%';
+                    pdiv.style.height = '100%';
+                    pdiv.style.zIndex = '-1';
+                    document.body.prepend(pdiv);
+                }
+            } else if (pdiv) {
+                // Ensure we remove it to prevent bleeding into non-particle themes
+                pdiv.remove();
+                if (window.pJSDom && window.pJSDom.length > 0) {
+                    window.pJSDom[0].pJS.fn.vendors.destroypJS();
+                    window.pJSDom = [];
+                }
+            }
+
             const resize = () => {
                 c.width = window.innerWidth;
                 c.height = window.innerHeight;
@@ -414,9 +536,10 @@
             window.addEventListener('resize', resize);
             resize();
 
+            let animationId;
             const animate = () => {
                 // Clear with fade for some effects, or solid for others
-                if(currentTheme.id === 'hacker') {
+                if(currentTheme.id === 'hacker' || currentTheme.id === 'matrix') {
                     ctx.fillStyle = 'rgba(0,0,0,0.05)'; // Trail effect
                     ctx.fillRect(0,0,c.width,c.height);
                 } else {
@@ -426,9 +549,46 @@
                 // Draw Theme Specific BG
                 currentTheme.renderBg(ctx, c.width, c.height);
                 
-                requestAnimationFrame(animate);
+                animationId = requestAnimationFrame(animate);
             };
             animate();
+
+            // Initialize particles.js if requested
+            if(currentTheme.useParticles === 'synthwave') {
+                 particlesJS('particles-js', {
+                    "particles": {
+                        "number": { "value": 50, "density": { "enable": true, "value_area": 800 } },
+                        "color": { "value": "#ff00ff" },
+                        "shape": { "type": "polygon", "polygon": { "nb_sides": 5 } },
+                        "opacity": { "value": 0.5, "random": false },
+                        "size": { "value": 3, "random": true },
+                        "line_linked": { "enable": true, "distance": 150, "color": "#00ffff", "opacity": 0.4, "width": 1 },
+                        "move": { "enable": true, "speed": 3, "direction": "bottom", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }
+                    },
+                    "retina_detect": true
+                });
+            } else if (currentTheme.useParticles === 'space') {
+                 particlesJS('particles-js', {
+                    "particles": {
+                        "number": { "value": 160, "density": { "enable": true, "value_area": 800 } },
+                        "color": { "value": "#ffffff" },
+                        "shape": { "type": "circle" },
+                        "opacity": { "value": 1, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0, "sync": false } },
+                        "size": { "value": 3, "random": true, "anim": { "enable": false } },
+                        "line_linked": { "enable": false },
+                        "move": { "enable": true, "speed": 1, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": { "onhover": { "enable": false }, "onclick": { "enable": false }, "resize": true }
+                    },
+                    "retina_detect": true
+                });
+            }
         }
 
     </script>
