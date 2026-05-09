@@ -6,6 +6,8 @@
     <title>Bot Identity Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     
     <style id="dynamic-style"></style>
 
@@ -50,6 +52,7 @@
         /* UTILITIES */
         .glass-panel { background: var(--panel-bg); backdrop-filter: blur(10px); }
         canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         
         /* GLITCH ANIMATION (For Broken Theme) */
         @keyframes glitch-anim {
@@ -62,6 +65,7 @@
 </head>
 <body class="min-h-screen relative overflow-x-hidden">
 
+    <div id="particles-js"></div>
     <canvas id="bgCanvas"></canvas>
 
     <div id="app-root" class="relative z-10 w-full min-h-screen flex flex-col">
@@ -198,6 +202,138 @@
                         ctx.beginPath(); ctx.arc(Math.random()*w, Math.random()*h, Math.random()*1.5, 0, Math.PI*2); ctx.fill();
                     }
                 }
+            },
+            {
+                id: 'cyberpunk',
+                name: 'Night City',
+                fonts: ['https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Rajdhani:wght@500&display=swap'],
+                css: `
+                    :root { --bg-color: #0b021a; --text-color: #fce205; --accent-color: #00ffff; --secondary-color: #ff003c; --panel-bg: rgba(11,2,26,0.8); --font-main: 'Rajdhani', sans-serif; --font-head: 'Orbitron', sans-serif; }
+                    .btn { background: #fce205; color: #0b021a; text-transform: uppercase; border: 2px solid #00ffff; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+                    .btn:hover { background: #00ffff; color: #0b021a; border-color: #fce205; }
+                    .inp { background: rgba(0,255,255,0.1); border-left: 4px solid #ff003c; border-bottom: 1px solid #ff003c; color: #00ffff; }
+                    .glass-panel { border-right: 4px solid #fce205; }
+                `,
+                phrases: { title: 'ARASAKA DATATERM', sub: 'Neural Link Established', submit1: 'JACK IN [Rank]', submit2: 'OVERWRITE [Show]' },
+                particlesConfig: {
+                    particles: {
+                        number: { value: 80, density: { enable: true, value_area: 800 } },
+                        color: { value: ["#00ffff", "#ff003c", "#fce205"] },
+                        shape: { type: "edge" },
+                        opacity: { value: 0.5, random: true },
+                        size: { value: 3, random: true },
+                        line_linked: { enable: true, distance: 150, color: "#00ffff", opacity: 0.4, width: 1 },
+                        move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }
+                    },
+                    retina_detect: true
+                },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = '#0b021a'; ctx.fillRect(0,0,w,h);
+                }
+            },
+            {
+                id: 'synthwave',
+                name: 'Outrun',
+                fonts: ['https://fonts.googleapis.com/css2?family=Vampiro+One&family=Montserrat:wght@400&display=swap'],
+                css: `
+                    :root { --bg-color: #2b00ff; --text-color: #ff007f; --accent-color: #00ffff; --secondary-color: #ff00ff; --panel-bg: rgba(20,0,50,0.85); --font-main: 'Montserrat', sans-serif; --font-head: 'Vampiro One', cursive; }
+                    .btn { background: transparent; border: 2px solid #ff007f; color: #ff007f; text-transform: uppercase; border-radius: 5px; box-shadow: 0 0 10px #ff007f; text-shadow: 0 0 5px #ff007f; }
+                    .btn:hover { background: #ff007f; color: #fff; box-shadow: 0 0 20px #ff007f; }
+                    .inp { background: rgba(0,0,0,0.5); border: 1px solid #00ffff; color: #00ffff; box-shadow: inset 0 0 10px #00ffff; }
+                    h2 { text-shadow: 2px 2px 0px #ff00ff, -2px -2px 0px #00ffff; }
+                `,
+                phrases: { title: 'RETRO 1984', sub: 'Cruising the Neon Grid', submit1: 'DRIVE [Rank]', submit2: 'CRUISE [Show]' },
+                particlesConfig: {
+                    particles: {
+                        number: { value: 50, density: { enable: true, value_area: 800 } },
+                        color: { value: ["#ff007f", "#00ffff", "#ff00ff"] },
+                        shape: { type: "triangle" },
+                        opacity: { value: 0.7, random: true },
+                        size: { value: 5, random: true },
+                        line_linked: { enable: true, distance: 150, color: "#ff00ff", opacity: 0.4, width: 2 },
+                        move: { enable: true, speed: 3, direction: "top", random: false, straight: false, out_mode: "out", bounce: false }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" }, resize: true }
+                    },
+                    retina_detect: true
+                },
+                renderBg: (ctx, w, h) => {
+                    const grad = ctx.createLinearGradient(0, 0, 0, h);
+                    grad.addColorStop(0, '#0f0c29');
+                    grad.addColorStop(0.5, '#302b63');
+                    grad.addColorStop(1, '#24243e');
+                    ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
+                }
+            },
+            {
+                id: 'matrix',
+                name: 'The Construct',
+                fonts: ['https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap'],
+                css: `
+                    :root { --bg-color: #000; --text-color: #00ff41; --accent-color: #008f11; --secondary-color: #003b00; --panel-bg: rgba(0,20,0,0.85); --font-main: 'Share Tech Mono', monospace; --font-head: 'Share Tech Mono', monospace; }
+                    .btn { background: #000; border: 1px solid #00ff41; color: #00ff41; text-transform: uppercase; border-radius: 0; box-shadow: 0 0 5px #00ff41; }
+                    .btn:hover { background: #00ff41; color: #000; box-shadow: 0 0 15px #00ff41; }
+                    .inp { background: #000; border: 1px dashed #008f11; color: #00ff41; }
+                    .glass-panel { border: 1px solid #008f11; box-shadow: 0 0 20px rgba(0,255,65,0.2); }
+                `,
+                phrases: { title: 'NEBUCHADNEZZAR', sub: 'Wake up, Neo...', submit1: 'TAKE RED PILL [Rank]', submit2: 'TAKE BLUE PILL [Show]' },
+                particlesConfig: {
+                    particles: {
+                        number: { value: 100, density: { enable: true, value_area: 800 } },
+                        color: { value: "#00ff41" },
+                        shape: { type: "char", character: { value: ["0", "1"], font: "monospace", style: "", weight: "bold" } },
+                        opacity: { value: 0.5, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } },
+                        size: { value: 8, random: true },
+                        line_linked: { enable: false },
+                        move: { enable: true, speed: 4, direction: "bottom", random: true, straight: false, out_mode: "out", bounce: false }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }
+                    },
+                    retina_detect: true
+                },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = '#000'; ctx.fillRect(0,0,w,h);
+                }
+            },
+            {
+                id: 'space',
+                name: 'Deep Space',
+                fonts: ['https://fonts.googleapis.com/css2?family=Exo+2:wght@300;700&display=swap'],
+                css: `
+                    :root { --bg-color: #000; --text-color: #fff; --accent-color: #a200ff; --secondary-color: #000; --panel-bg: rgba(10,10,20,0.7); --font-main: 'Exo 2', sans-serif; --font-head: 'Exo 2', sans-serif; }
+                    .btn { background: transparent; color: #a200ff; border: 1px solid #a200ff; border-radius: 20px; text-transform: uppercase; letter-spacing: 2px; }
+                    .btn:hover { background: #a200ff; color: #fff; box-shadow: 0 0 20px #a200ff; }
+                    .inp { background: rgba(255,255,255,0.05); border: 1px solid #333; border-radius: 10px; color: #fff; }
+                `,
+                phrases: { title: 'ORBITAL COMMAND', sub: 'Awaiting Transmission Coordinates', submit1: 'INITIATE JUMP', submit2: 'BROADCAST SIGNAL' },
+                particlesConfig: {
+                    particles: {
+                        number: { value: 160, density: { enable: true, value_area: 800 } },
+                        color: { value: "#ffffff" },
+                        shape: { type: "circle" },
+                        opacity: { value: 1, random: true, anim: { enable: true, speed: 1, opacity_min: 0, sync: false } },
+                        size: { value: 3, random: true, anim: { enable: false, speed: 4, size_min: 0.3, sync: false } },
+                        line_linked: { enable: false },
+                        move: { enable: true, speed: 1, direction: "none", random: true, straight: false, out_mode: "out", bounce: false }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: true, mode: "repulse" }, resize: true },
+                        modes: { bubble: { distance: 250, size: 0, duration: 2, opacity: 0, speed: 3 }, repulse: { distance: 400, duration: 0.4 } }
+                    },
+                    retina_detect: true
+                },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = '#000'; ctx.fillRect(0,0,w,h);
+                }
             }
         ];
 
@@ -292,8 +428,23 @@
             // 3. Inject HTML
             document.getElementById('app-root').innerHTML = getLayout(currentTheme);
 
-            // 4. Start Canvas Animation
-            initCanvas();
+            // 4. Start Animation Engine
+            if (currentTheme.particlesConfig) {
+                // Hide canvas, show particles
+                document.getElementById('bgCanvas').style.display = 'none';
+                const pjs = document.getElementById('particles-js');
+                pjs.innerHTML = ''; // Clear previous instances
+                pjs.style.display = 'block';
+                particlesJS('particles-js', currentTheme.particlesConfig);
+
+                // We still need the solid background color since particles are transparent
+                pjs.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim() || '#000';
+            } else {
+                // Hide particles, show canvas
+                document.getElementById('particles-js').style.display = 'none';
+                document.getElementById('bgCanvas').style.display = 'block';
+                initCanvas();
+            }
 
             // 5. Start Clock
             setInterval(() => {
@@ -343,11 +494,29 @@
 
             if(!token) {
                 log('ERROR: Token Missing', true);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Token Missing',
+                    text: 'Please enter your identity token.',
+                    background: 'var(--panel-bg)',
+                    color: 'var(--text-color)'
+                });
                 return;
             }
 
             const conf = apiMap[editMode];
             log(`Sending ${conf.endpoint} [${type.toUpperCase()}]...`);
+
+            Swal.fire({
+                title: 'Updating...',
+                text: `Sending ${conf.endpoint}`,
+                allowOutsideClick: false,
+                background: 'var(--panel-bg)',
+                color: 'var(--text-color)',
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
 
             try {
                 let res;
@@ -358,12 +527,18 @@
                     
                     if (!file) {
                         log('ERROR: Image file is required.', true);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'No Image',
+                            text: 'Please select an image file to upload.',
+                            background: 'var(--panel-bg)',
+                            color: 'var(--text-color)'
+                        });
                         return;
                     }
 
                     const formData = new FormData();
-                    formData.append('photo', JSON.stringify({ type: "static", photo: "attach://pic" }));
-                    formData.append('pic', file);
+                    formData.append('photo', file);
 
                     res = await fetch(`https://api.telegram.org/bot${token}/${conf.endpoint}`, {
                         method: 'POST',
@@ -392,11 +567,32 @@
                 if(data.ok) {
                     log('SUCCESS: Updated.', false);
                     log(JSON.stringify(data.result));
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Profile updated successfully.',
+                        background: 'var(--panel-bg)',
+                        color: 'var(--text-color)'
+                    });
                 } else {
                     log(`API ERROR: ${data.description}`, true);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'API Error',
+                        text: data.description,
+                        background: 'var(--panel-bg)',
+                        color: 'var(--text-color)'
+                    });
                 }
             } catch(e) {
                 log(`NET ERROR: ${e.message}`, true);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Network Error',
+                    text: e.message,
+                    background: 'var(--panel-bg)',
+                    color: 'var(--text-color)'
+                });
             }
         }
 
