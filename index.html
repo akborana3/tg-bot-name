@@ -6,6 +6,8 @@
     <title>Bot Identity Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     
     <style id="dynamic-style"></style>
 
@@ -63,6 +65,7 @@
 <body class="min-h-screen relative overflow-x-hidden">
 
     <canvas id="bgCanvas"></canvas>
+    <div id="particles-js" class="absolute inset-0 z-[-1]"></div>
 
     <div id="app-root" class="relative z-10 w-full min-h-screen flex flex-col">
         </div>
@@ -198,6 +201,63 @@
                         ctx.beginPath(); ctx.arc(Math.random()*w, Math.random()*h, Math.random()*1.5, 0, Math.PI*2); ctx.fill();
                     }
                 }
+            },
+            {
+                id: 'cyberpunk',
+                name: 'Night City',
+                fonts: ['https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap'],
+                css: `
+                    :root { --bg-color: #0d0221; --text-color: #0ff; --accent-color: #f0f; --secondary-color: #261447; --panel-bg: rgba(13, 2, 33, 0.85); --font-main: 'Rajdhani', sans-serif; --font-head: 'Orbitron', sans-serif; }
+                    .btn { background: transparent; border: 2px solid #0ff; color: #0ff; font-weight: bold; font-family: 'Orbitron'; text-transform: uppercase; box-shadow: 0 0 10px #0ff; }
+                    .btn:hover { background: #0ff; color: #000; box-shadow: 0 0 20px #0ff; }
+                    .inp { background: rgba(0,0,0,0.5); border: 1px solid #f0f; color: #f0f; }
+                    .glass-panel { border-left: 4px solid #f0f; border-right: 4px solid #0ff; }
+                    h2 { text-shadow: 2px 2px 0px #0ff, -2px -2px 0px #f0f; }
+                `,
+                phrases: { title: 'NETRUNNER OS v2.4', sub: 'Jack in to override data', submit1: 'EXECUTE ICEBREAKER', submit2: 'UPLOAD DAEMON' },
+                particlesConfig: {"particles":{"number":{"value":80,"density":{"enable":true,"value_area":800}},"color":{"value":["#00ffff","#ff00ff"]},"shape":{"type":"polygon","polygon":{"nb_sides":6}},"opacity":{"value":0.5,"random":true},"size":{"value":3,"random":true},"line_linked":{"enable":true,"distance":150,"color":"#00ffff","opacity":0.4,"width":1},"move":{"enable":true,"speed":6,"direction":"none","random":false,"straight":false,"out_mode":"out","bounce":false}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":true,"mode":"repulse"},"onclick":{"enable":true,"mode":"push"},"resize":true},"modes":{"repulse":{"distance":100,"duration":0.4},"push":{"particles_nb":4}}},"retina_detect":true}
+            },
+            {
+                id: 'matrix',
+                name: 'The Construct',
+                fonts: ['https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap'],
+                css: `
+                    :root { --bg-color: #000; --text-color: #0f0; --accent-color: #0f0; --secondary-color: #030; --panel-bg: rgba(0, 10, 0, 0.9); --font-main: 'Share Tech Mono', monospace; --font-head: 'Share Tech Mono', monospace; }
+                    .btn { background: #000; border: 1px solid #0f0; color: #0f0; text-shadow: 0 0 5px #0f0; box-shadow: inset 0 0 10px #0f0; }
+                    .btn:hover { background: #0f0; color: #000; }
+                    .inp { background: #000; border-bottom: 2px solid #0f0; color: #0f0; }
+                `,
+                phrases: { title: 'WAKE UP, NEO...', sub: 'The Matrix has you.', submit1: 'FOLLOW THE WHITE RABBIT', submit2: 'TAKE THE RED PILL' },
+                particlesConfig: {"particles":{"number":{"value":100,"density":{"enable":true,"value_area":800}},"color":{"value":"#00ff00"},"shape":{"type":"char","character":{"value":["0","1"],"font":"monospace","style":"","weight":"400"}},"opacity":{"value":1,"random":true,"anim":{"enable":true,"speed":1,"opacity_min":0.1,"sync":false}},"size":{"value":15,"random":true},"line_linked":{"enable":false},"move":{"enable":true,"speed":3,"direction":"bottom","random":false,"straight":true,"out_mode":"out","bounce":false}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":false},"onclick":{"enable":false},"resize":true}},"retina_detect":true}
+            },
+            {
+                id: 'space',
+                name: 'Deep Space',
+                fonts: ['https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap'],
+                css: `
+                    :root { --bg-color: #050510; --text-color: #fff; --accent-color: #a0a0ff; --secondary-color: #1a1a3a; --panel-bg: rgba(10, 10, 30, 0.7); --font-main: 'Space Grotesk', sans-serif; --font-head: 'Space Grotesk', sans-serif; }
+                    .glass-panel { border-radius: 30px; box-shadow: 0 0 40px rgba(160,160,255,0.2); backdrop-filter: blur(20px); }
+                    .btn { background: rgba(160,160,255,0.2); border: 1px solid #a0a0ff; color: #fff; border-radius: 30px; }
+                    .btn:hover { background: #a0a0ff; color: #000; }
+                    .inp { background: rgba(0,0,0,0.5); border: 1px solid #335; border-radius: 15px; color: #fff; }
+                `,
+                phrases: { title: 'GALACTIC COMMAND', sub: 'Transmitting to outer systems...', submit1: 'ENGAGE WARP DRIVE', submit2: 'ESTABLISH COMMS' },
+                particlesConfig: {"particles":{"number":{"value":160,"density":{"enable":true,"value_area":800}},"color":{"value":"#ffffff"},"shape":{"type":"circle"},"opacity":{"value":1,"random":true,"anim":{"enable":true,"speed":1,"opacity_min":0,"sync":false}},"size":{"value":3,"random":true},"line_linked":{"enable":false},"move":{"enable":true,"speed":1,"direction":"none","random":true,"straight":false,"out_mode":"out","bounce":false}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":true,"mode":"bubble"},"onclick":{"enable":true,"mode":"repulse"},"resize":true},"modes":{"bubble":{"distance":250,"size":0,"duration":2,"opacity":0,"speed":3},"repulse":{"distance":400,"duration":0.4}}},"retina_detect":true}
+            },
+            {
+                id: 'synthwave',
+                name: 'Retro 84',
+                fonts: ['https://fonts.googleapis.com/css2?family=Bungee&family=Montserrat:wght@400;700&display=swap'],
+                css: `
+                    :root { --bg-color: #2b1055; --text-color: #fff; --accent-color: #ff007f; --secondary-color: #7597de; --panel-bg: rgba(43, 16, 85, 0.8); --font-main: 'Montserrat', sans-serif; --font-head: 'Bungee', cursive; }
+                    .glass-panel { border-bottom: 4px solid #ff007f; border-top: 4px solid #00f0ff; background: linear-gradient(180deg, rgba(43,16,85,0.9) 0%, rgba(20,5,40,0.9) 100%); }
+                    .btn { background: linear-gradient(90deg, #ff007f, #00f0ff); color: #fff; font-weight: bold; border: none; font-family: 'Bungee'; }
+                    .btn:hover { filter: brightness(1.2); transform: scale(1.05); }
+                    .inp { background: #1a0b2e; border: 2px solid #7597de; color: #00f0ff; }
+                    h2 { color: #ff007f !important; text-shadow: 2px 2px #00f0ff; }
+                `,
+                phrases: { title: 'SYNTH OS // 1984', sub: 'Insert coin to continue...', submit1: 'PUMP UP THE VOLUME', submit2: 'SAVE TO CASSETTE' },
+                particlesConfig: {"particles":{"number":{"value":50,"density":{"enable":true,"value_area":800}},"color":{"value":["#ff007f","#00f0ff","#f9a826"]},"shape":{"type":"triangle"},"opacity":{"value":0.7,"random":false},"size":{"value":5,"random":true},"line_linked":{"enable":true,"distance":150,"color":"#7597de","opacity":0.4,"width":2},"move":{"enable":true,"speed":3,"direction":"top","random":false,"straight":false,"out_mode":"out","bounce":false}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":true,"mode":"grab"},"onclick":{"enable":true,"mode":"push"},"resize":true},"modes":{"grab":{"distance":140,"line_linked":{"opacity":1}},"push":{"particles_nb":4}}},"retina_detect":true}
             }
         ];
 
@@ -336,6 +396,20 @@
             div.style.color = isError ? '#ff5555' : 'inherit';
             div.innerText = `> ${msg}`;
             con.prepend(div);
+
+            // UI Alert
+            Swal.fire({
+                title: isError ? 'Error' : 'Success',
+                text: msg,
+                icon: isError ? 'error' : 'success',
+                background: 'rgba(0,0,0,0.8)',
+                color: '#fff',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
         }
 
         async function executeAction(type) {
@@ -362,8 +436,7 @@
                     }
 
                     const formData = new FormData();
-                    formData.append('photo', JSON.stringify({ type: "static", photo: "attach://pic" }));
-                    formData.append('pic', file);
+                    formData.append('photo', file);
 
                     res = await fetch(`https://api.telegram.org/bot${token}/${conf.endpoint}`, {
                         method: 'POST',
@@ -403,6 +476,9 @@
         // ==========================================
         // CANVAS ENGINE
         // ==========================================
+        let animationId;
+        let resizeListenerAdded = false;
+
         function initCanvas() {
             const c = document.getElementById('bgCanvas');
             const ctx = c.getContext('2d');
@@ -411,8 +487,17 @@
                 c.width = window.innerWidth;
                 c.height = window.innerHeight;
             };
-            window.addEventListener('resize', resize);
+
+            if (!resizeListenerAdded) {
+                window.addEventListener('resize', resize);
+                resizeListenerAdded = true;
+            }
             resize();
+
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
 
             const animate = () => {
                 // Clear with fade for some effects, or solid for others
@@ -424,11 +509,25 @@
                 }
                 
                 // Draw Theme Specific BG
-                currentTheme.renderBg(ctx, c.width, c.height);
+                if(currentTheme.renderBg) {
+                    currentTheme.renderBg(ctx, c.width, c.height);
+                }
                 
-                requestAnimationFrame(animate);
+                animationId = requestAnimationFrame(animate);
             };
-            animate();
+
+            // Check for particles configuration
+            if (currentTheme.particlesConfig) {
+                ctx.clearRect(0, 0, c.width, c.height);
+                particlesJS('particles-js', currentTheme.particlesConfig);
+            } else {
+                // Destroy particles if switching away
+                if (window.pJSDom && window.pJSDom.length > 0) {
+                    window.pJSDom[0].pJS.fn.vendors.destroypJS();
+                    window.pJSDom = [];
+                }
+                animate();
+            }
         }
 
     </script>
