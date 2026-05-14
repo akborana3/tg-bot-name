@@ -6,6 +6,8 @@
     <title>Bot Identity Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     
     <style id="dynamic-style"></style>
 
@@ -198,6 +200,107 @@
                         ctx.beginPath(); ctx.arc(Math.random()*w, Math.random()*h, Math.random()*1.5, 0, Math.PI*2); ctx.fill();
                     }
                 }
+            },
+            {
+                id: 'cyberpunk',
+                name: 'Night City',
+                fonts: ['https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Orbitron:wght@700&display=swap'],
+                css: `
+                    :root { --bg-color: #0b0213; --text-color: #0ff; --accent-color: #f0f; --secondary-color: #111; --panel-bg: rgba(11, 2, 19, 0.85); --font-main: 'Rajdhani', sans-serif; --font-head: 'Orbitron', sans-serif; }
+                    .btn { background: transparent; border: 2px solid #0ff; color: #0ff; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 0 10px #0ff; position: relative; overflow: hidden; }
+                    .btn:hover { background: #0ff; color: #0b0213; box-shadow: 0 0 20px #0ff; }
+                    .inp { background: rgba(0,255,255,0.1); border: 1px solid #f0f; color: #f0f; font-family: 'Rajdhani'; }
+                    .glass-panel { border-left: 5px solid #f0f; border-right: 5px solid #0ff; box-shadow: inset 0 0 20px rgba(255,0,255,0.2); }
+                `,
+                phrases: { title: 'NETRUNNER DECK', sub: 'Jack In. Override.', submit1: 'EXECUTE DAEMON (Rank)', submit2: 'UPLOAD ICE (Show)' },
+                particlesConfig: {
+                    particles: {
+                        number: { value: 80, density: { enable: true, value_area: 800 } },
+                        color: { value: ["#00ffff", "#ff00ff"] },
+                        shape: { type: "circle" },
+                        opacity: { value: 0.5, random: true },
+                        size: { value: 3, random: true },
+                        line_linked: { enable: true, distance: 150, color: "#00ffff", opacity: 0.4, width: 1 },
+                        move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true },
+                        modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+                    },
+                    retina_detect: true
+                },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = '#0b0213'; ctx.fillRect(0,0,w,h);
+                }
+            },
+            {
+                id: 'synthwave',
+                name: 'Outrun 1984',
+                fonts: ['https://fonts.googleapis.com/css2?family=Righteous&family=Montserrat:wght@400;700&display=swap'],
+                css: `
+                    :root { --bg-color: #2b0d3e; --text-color: #ff90e8; --accent-color: #00f0ff; --secondary-color: #1a082e; --panel-bg: rgba(43, 13, 62, 0.85); --font-main: 'Montserrat', sans-serif; --font-head: 'Righteous', cursive; }
+                    .btn { background: linear-gradient(135deg, #ff007f, #7928ca); color: #fff; border: 2px solid #00f0ff; border-radius: 8px; text-transform: uppercase; box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4); }
+                    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 240, 255, 0.6); }
+                    .inp { background: rgba(0, 240, 255, 0.1); border: 2px solid #ff90e8; color: #fff; border-radius: 8px; }
+                    .glass-panel { border: 2px solid #ff007f; box-shadow: 0 0 20px rgba(255, 0, 127, 0.5); }
+                    h2 { background: -webkit-linear-gradient(#00f0ff, #ff007f); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+                `,
+                phrases: { title: 'NEON GRID', sub: 'Cruising the digital highway', submit1: 'BOOST SPEED (Rank)', submit2: 'CRUISE MODE (Show)' },
+                renderBg: (ctx, w, h) => {
+                    // Sunset gradient
+                    const grad = ctx.createLinearGradient(0,0,0,h);
+                    grad.addColorStop(0, '#000022');
+                    grad.addColorStop(0.6, '#3a0ca3');
+                    grad.addColorStop(1, '#f72585');
+                    ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
+
+                    // Grid lines
+                    ctx.strokeStyle = 'rgba(0, 240, 255, 0.3)';
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    const centerY = h * 0.7;
+                    for (let i = 0; i < w; i += 40) {
+                        ctx.moveTo(w/2, centerY);
+                        ctx.lineTo((i - w/2) * 3 + w/2, h);
+                    }
+                    for (let i = centerY; i < h; i += Math.max(10, (i - centerY)/2)) {
+                        ctx.moveTo(0, i);
+                        ctx.lineTo(w, i);
+                    }
+                    ctx.stroke();
+                }
+            },
+            {
+                id: 'space',
+                name: 'Deep Space',
+                fonts: ['https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&display=swap'],
+                css: `
+                    :root { --bg-color: #030014; --text-color: #e2e8f0; --accent-color: #8b5cf6; --secondary-color: #0f172a; --panel-bg: rgba(15, 23, 42, 0.7); --font-main: 'Space Grotesk', sans-serif; --font-head: 'Space Grotesk', sans-serif; }
+                    .btn { background: transparent; border: 1px solid #8b5cf6; color: #e2e8f0; border-radius: 20px; transition: all 0.3s ease; }
+                    .btn:hover { background: rgba(139, 92, 246, 0.2); box-shadow: 0 0 15px rgba(139, 92, 246, 0.5); }
+                    .inp { background: rgba(255,255,255,0.05); border: 1px solid rgba(139, 92, 246, 0.3); color: #fff; border-radius: 12px; }
+                    .glass-panel { border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); }
+                `,
+                phrases: { title: 'ORBITAL STATION', sub: 'Transmitting Coordinates', submit1: 'INITIATE JUMP (Rank)', submit2: 'ESTABLISH LINK (Show)' },
+                particlesConfig: {
+                    particles: {
+                        number: { value: 120, density: { enable: true, value_area: 1000 } },
+                        color: { value: "#ffffff" },
+                        shape: { type: "star" },
+                        opacity: { value: 0.8, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } },
+                        size: { value: 2, random: true },
+                        line_linked: { enable: false },
+                        move: { enable: true, speed: 0.5, direction: "top", random: true, straight: false, out_mode: "out", bounce: false }
+                    },
+                    interactivity: { detect_on: "canvas", events: { onhover: { enable: false }, onclick: { enable: false }, resize: true } },
+                    retina_detect: true
+                },
+                renderBg: (ctx, w, h) => {
+                    const grad = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, Math.max(w, h));
+                    grad.addColorStop(0, '#0f172a'); grad.addColorStop(1, '#030014');
+                    ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
+                }
             }
         ];
 
@@ -343,6 +446,7 @@
 
             if(!token) {
                 log('ERROR: Token Missing', true);
+                if (window.Swal) Swal.fire('Error', 'Bot Token is missing.', 'error');
                 return;
             }
 
@@ -358,12 +462,12 @@
                     
                     if (!file) {
                         log('ERROR: Image file is required.', true);
+                        if (window.Swal) Swal.fire('Error', 'Image file is required for Photo mode.', 'error');
                         return;
                     }
 
                     const formData = new FormData();
-                    formData.append('photo', JSON.stringify({ type: "static", photo: "attach://pic" }));
-                    formData.append('pic', file);
+                    formData.append('photo', file);
 
                     res = await fetch(`https://api.telegram.org/bot${token}/${conf.endpoint}`, {
                         method: 'POST',
@@ -392,11 +496,14 @@
                 if(data.ok) {
                     log('SUCCESS: Updated.', false);
                     log(JSON.stringify(data.result));
+                    if (window.Swal) Swal.fire('Success', 'Successfully updated ' + conf.label, 'success');
                 } else {
                     log(`API ERROR: ${data.description}`, true);
+                    if (window.Swal) Swal.fire('API Error', data.description, 'error');
                 }
             } catch(e) {
                 log(`NET ERROR: ${e.message}`, true);
+                if (window.Swal) Swal.fire('Network Error', e.message, 'error');
             }
         }
 
@@ -404,6 +511,12 @@
         // CANVAS ENGINE
         // ==========================================
         function initCanvas() {
+            // First cleanup any existing particles.js wrapper if it exists (for theme switching if needed)
+            const particlesDiv = document.getElementById('particles-js');
+            if (particlesDiv) {
+                particlesDiv.remove();
+            }
+
             const c = document.getElementById('bgCanvas');
             const ctx = c.getContext('2d');
             
@@ -413,6 +526,23 @@
             };
             window.addEventListener('resize', resize);
             resize();
+
+            // If theme has particles config, inject particles div and initialize
+            if (currentTheme.particlesConfig) {
+                const pDiv = document.createElement('div');
+                pDiv.id = 'particles-js';
+                pDiv.style.position = 'fixed';
+                pDiv.style.top = '0';
+                pDiv.style.left = '0';
+                pDiv.style.width = '100%';
+                pDiv.style.height = '100%';
+                pDiv.style.zIndex = '-1';
+                document.body.insertBefore(pDiv, document.getElementById('app-root'));
+
+                if (window.particlesJS) {
+                    particlesJS('particles-js', currentTheme.particlesConfig);
+                }
+            }
 
             const animate = () => {
                 // Clear with fade for some effects, or solid for others
@@ -424,7 +554,9 @@
                 }
                 
                 // Draw Theme Specific BG
-                currentTheme.renderBg(ctx, c.width, c.height);
+                if (currentTheme.renderBg) {
+                    currentTheme.renderBg(ctx, c.width, c.height);
+                }
                 
                 requestAnimationFrame(animate);
             };
