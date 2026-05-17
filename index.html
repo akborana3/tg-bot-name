@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bot Identity Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style id="dynamic-style"></style>
@@ -198,6 +199,105 @@
                         ctx.beginPath(); ctx.arc(Math.random()*w, Math.random()*h, Math.random()*1.5, 0, Math.PI*2); ctx.fill();
                     }
                 }
+            },
+            {
+                id: 'cyberpunk',
+                name: 'Night City',
+                fonts: ['https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;700&display=swap'],
+                css: `
+                    :root { --bg-color: #0d0221; --text-color: #0ff; --accent-color: #f0f; --secondary-color: #260c3d; --panel-bg: rgba(13,2,33,0.85); --font-main: 'Rajdhani', sans-serif; --font-head: 'Orbitron', sans-serif; }
+                    .btn { background: transparent; border: 1px solid #0ff; color: #0ff; box-shadow: 0 0 10px rgba(0,255,255,0.5); font-weight: bold; }
+                    .btn:hover { background: #0ff; color: #0d0221; box-shadow: 0 0 20px #0ff; text-shadow: none; }
+                    .inp { background: rgba(0,255,255,0.05); border: 1px solid #f0f; color: #fff; box-shadow: inset 0 0 10px rgba(255,0,255,0.2); }
+                    .glass-panel { border-right: 4px solid #f0f; border-bottom: 4px solid #0ff; }
+                    h2 { text-shadow: 0 0 8px #f0f; }
+                `,
+                phrases: { title: 'NETRUNNER_OS', sub: 'Jack In. Override.', submit1: 'UPLOAD VIRUS (Rank)', submit2: 'SPOOF ID (Show)' },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = '#0d0221'; ctx.fillRect(0,0,w,h);
+                    ctx.strokeStyle = 'rgba(255, 0, 255, 0.2)';
+                    ctx.lineWidth = 1;
+                    const time = Date.now() / 1000;
+                    const offset = (time * 50) % 40;
+                    for(let i=0; i<h; i+=40) {
+                        ctx.beginPath(); ctx.moveTo(0, i + offset); ctx.lineTo(w, i + offset); ctx.stroke();
+                    }
+                    ctx.strokeStyle = 'rgba(0, 255, 255, 0.1)';
+                    for(let i=0; i<w; i+=40) {
+                        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke();
+                    }
+                }
+            },
+            {
+                id: 'matrix',
+                name: 'The Construct',
+                fonts: ['https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap'],
+                css: `
+                    :root { --bg-color: #000; --text-color: #00ff41; --accent-color: #008f11; --secondary-color: #003b00; --panel-bg: rgba(0,0,0,0.9); --font-main: 'Courier Prime', monospace; --font-head: 'Courier Prime', monospace; }
+                    .btn { background: #003b00; color: #00ff41; border: 1px solid #008f11; }
+                    .btn:hover { background: #00ff41; color: #000; }
+                    .inp { background: #000; border: 1px solid #008f11; color: #00ff41; }
+                    .glass-panel { box-shadow: 0 0 20px rgba(0,255,65,0.2); }
+                `,
+                phrases: { title: 'ZION MAINFRAME', sub: 'Wake up, Neo...', submit1: 'TAKE RED PILL (Rank)', submit2: 'TAKE BLUE PILL (Show)' },
+                renderBg: (ctx, w, h) => {
+                    if(!ctx.matrixDrops) {
+                        ctx.matrixDrops = [];
+                        for(let i=0; i<w/20; i++) ctx.matrixDrops[i] = Math.random() * -100;
+                    }
+                    ctx.fillStyle = 'rgba(0,0,0,0.1)';
+                    ctx.fillRect(0,0,w,h);
+                    ctx.fillStyle = '#0f0';
+                    ctx.font = '15px monospace';
+                    for(let i=0; i<ctx.matrixDrops.length; i++) {
+                        const char = String.fromCharCode(0x30A0 + Math.random() * 96);
+                        ctx.fillText(char, i*20, ctx.matrixDrops[i]*20);
+                        if(ctx.matrixDrops[i]*20 > h && Math.random() > 0.975) {
+                            ctx.matrixDrops[i] = 0;
+                        }
+                        ctx.matrixDrops[i]++;
+                    }
+                }
+            },
+            {
+                id: 'space',
+                name: 'Deep Space',
+                fonts: ['https://fonts.googleapis.com/css2?family=Exo+2:wght@300;700&display=swap'],
+                css: `
+                    :root { --bg-color: #020111; --text-color: #fff; --accent-color: #7b2cbf; --secondary-color: #3c096c; --panel-bg: rgba(2,1,17,0.8); --font-main: 'Exo 2', sans-serif; --font-head: 'Exo 2', sans-serif; }
+                    .btn { background: linear-gradient(90deg, #3c096c, #7b2cbf); color: #fff; border: none; border-radius: 20px; box-shadow: 0 4px 15px rgba(123,44,191,0.4); }
+                    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(123,44,191,0.6); }
+                    .inp { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 10px; }
+                    .glass-panel { border-radius: 20px; backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
+                `,
+                phrases: { title: 'ORBITAL COMMAND', sub: 'Interstellar Synchronization', submit1: 'INITIATE JUMP (Rank)', submit2: 'BROADCAST SIG (Show)' },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = '#020111'; ctx.fillRect(0,0,w,h);
+
+                    if(!ctx.stars) {
+                        ctx.stars = [];
+                        for(let i=0; i<150; i++) {
+                            ctx.stars.push({
+                                x: Math.random() * w,
+                                y: Math.random() * h,
+                                r: Math.random() * 1.5,
+                                speed: Math.random() * 0.5 + 0.1
+                            });
+                        }
+                    }
+
+                    ctx.fillStyle = '#fff';
+                    ctx.stars.forEach(star => {
+                        ctx.beginPath();
+                        ctx.arc(star.x, star.y, star.r, 0, Math.PI*2);
+                        ctx.fill();
+                        star.y += star.speed;
+                        if(star.y > h) {
+                            star.y = 0;
+                            star.x = Math.random() * w;
+                        }
+                    });
+                }
             }
         ];
 
@@ -336,6 +436,19 @@
             div.style.color = isError ? '#ff5555' : 'inherit';
             div.innerText = `> ${msg}`;
             con.prepend(div);
+
+            if (isError || msg.includes("SUCCESS")) {
+                Swal.fire({
+                    text: msg,
+                    icon: isError ? 'error' : 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    background: 'var(--panel-bg)',
+                    color: 'var(--text-color)'
+                });
+            }
         }
 
         async function executeAction(type) {
@@ -362,8 +475,7 @@
                     }
 
                     const formData = new FormData();
-                    formData.append('photo', JSON.stringify({ type: "static", photo: "attach://pic" }));
-                    formData.append('pic', file);
+                    formData.append('photo', file);
 
                     res = await fetch(`https://api.telegram.org/bot${token}/${conf.endpoint}`, {
                         method: 'POST',
