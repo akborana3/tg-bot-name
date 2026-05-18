@@ -59,6 +59,9 @@
         }
         .glitch-active { animation: glitch-anim 0.3s infinite; }
     </style>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="min-h-screen relative overflow-x-hidden">
 
@@ -84,7 +87,7 @@
                 `,
                 phrases: { title: 'SYSTEM_ROOT_ACCESS', sub: 'Execute Protocol 8096', submit1: 'INJECT_PAYLOAD [RANK]', submit2: 'OVERRIDE_LANG [SHOW]' },
                 renderBg: (ctx, w, h) => {
-                    ctx.fillStyle = '#000'; ctx.fillRect(0,0,w,h);
+                    ctx.fillStyle = 'rgba(0,0,0,0.05)'; ctx.fillRect(0,0,w,h);
                     ctx.fillStyle = '#0f0'; ctx.font = '15px monospace';
                     for(let i=0; i<w/15; i++) {
                         if(Math.random()>0.975) ctx.fillText(String.fromCharCode(0x30A0 + Math.random() * 96), i*15, Math.random()*h);
@@ -197,6 +200,190 @@
                     for(let i=0; i<100; i++) {
                         ctx.beginPath(); ctx.arc(Math.random()*w, Math.random()*h, Math.random()*1.5, 0, Math.PI*2); ctx.fill();
                     }
+                }
+            },
+            {
+                id: 'matrix',
+                name: 'The Matrix',
+                fonts: ['https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap'],
+                css: `
+                    :root { --bg-color: #000; --text-color: #00ff41; --accent-color: #00ff41; --secondary-color: #003b00; --panel-bg: rgba(0, 15, 0, 0.85); --font-main: 'Share Tech Mono', monospace; --font-head: 'Share Tech Mono', monospace; }
+                    .btn { background: rgba(0, 59, 0, 0.5); color: #00ff41; border: 1px solid #00ff41; text-transform: uppercase; }
+                    .btn:hover { background: #00ff41; color: #000; box-shadow: 0 0 15px #00ff41; }
+                    .inp { background: #000; border: 1px solid #008f11; color: #00ff41; font-family: 'Share Tech Mono'; }
+                    .inp:focus { border-color: #00ff41; box-shadow: 0 0 10px rgba(0,255,65,0.3); }
+                    .glass-panel { border: 1px solid rgba(0,255,65,0.2); }
+                `,
+                phrases: { title: 'ZION MAINFRAME', sub: 'Wake up, Neo...', submit1: 'TAKE RED PILL (Rank)', submit2: 'ENTER MATRIX (Show)' },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                    ctx.fillRect(0,0,w,h);
+
+                    ctx.fillStyle = '#0F0';
+                    ctx.font = '15px monospace';
+
+                    const columns = w / 20;
+
+                    if(!this.matrixDrops) {
+                        this.matrixDrops = [];
+                        for(let i=0; i<columns; i++) this.matrixDrops[i] = 1;
+                    }
+
+                    // Reset matrixDrops if width changed significantly
+                    if(this.matrixDrops.length !== Math.floor(columns)) {
+                        this.matrixDrops = [];
+                        for(let i=0; i<columns; i++) this.matrixDrops[i] = 1;
+                    }
+
+                    for(let i=0; i<this.matrixDrops.length; i++) {
+                        const text = String.fromCharCode(Math.floor(Math.random() * 96) + 33);
+                        ctx.fillText(text, i*20, this.matrixDrops[i]*20);
+
+                        if(this.matrixDrops[i]*20 > h && Math.random() > 0.975)
+                            this.matrixDrops[i] = 0;
+                        this.matrixDrops[i]++;
+                    }
+                }
+            },
+            {
+                id: 'cyberpunk',
+                name: 'Night City',
+                fonts: ['https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;700&display=swap'],
+                css: `
+                    :root { --bg-color: #0d0221; --text-color: #00f0ff; --accent-color: #ff003c; --secondary-color: #240046; --panel-bg: rgba(13, 2, 33, 0.85); --font-main: 'Rajdhani', sans-serif; --font-head: 'Orbitron', sans-serif; }
+                    .btn { background: transparent; border: 2px solid #00f0ff; color: #00f0ff; text-transform: uppercase; letter-spacing: 2px; position: relative; overflow: hidden; box-shadow: 0 0 10px rgba(0,240,255,0.3); }
+                    .btn:hover { background: #00f0ff; color: #000; box-shadow: 0 0 20px #00f0ff, 0 0 40px #00f0ff; }
+                    .inp { background: rgba(36, 0, 70, 0.4); border: 1px solid #ff003c; border-left: 5px solid #ff003c; color: #fff; text-shadow: 0 0 5px #fff; }
+                    .glass-panel { border: 1px solid rgba(0,240,255,0.2); box-shadow: 0 0 30px rgba(255,0,60,0.1); }
+                    h2 { text-shadow: 2px 2px 0px #00f0ff, -2px -2px 0px #ff003c; }
+                `,
+                phrases: { title: 'NEURO_DECK v2.4', sub: 'Jack into the construct', submit1: 'UPLOAD ENgram (Rank)', submit2: 'ALTER IDENTITY (Show)' },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = '#0d0221'; ctx.fillRect(0,0,w,h);
+
+                    // Grid lines
+                    ctx.strokeStyle = 'rgba(0, 240, 255, 0.1)';
+                    ctx.lineWidth = 1;
+
+                    const time = Date.now() / 1000;
+                    const offset = (time * 20) % 40;
+
+                    ctx.beginPath();
+                    for(let x = offset; x < w; x += 40) {
+                        ctx.moveTo(x, 0); ctx.lineTo(x, h);
+                    }
+                    for(let y = offset; y < h; y += 40) {
+                        ctx.moveTo(0, y); ctx.lineTo(w, y);
+                    }
+                    ctx.stroke();
+
+                    // Glitch boxes
+                    if(Math.random() > 0.8) {
+                        ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255, 0, 60, 0.4)' : 'rgba(0, 240, 255, 0.4)';
+                        ctx.fillRect(Math.random()*w, Math.random()*h, Math.random()*100 + 50, Math.random()*10 + 2);
+                    }
+                }
+            },
+            {
+                id: 'synthwave',
+                name: 'Outrun 1984',
+                fonts: ['https://fonts.googleapis.com/css2?family=Monoton&family=Montserrat:wght@400;700&display=swap'],
+                css: `
+                    :root { --bg-color: #1a0033; --text-color: #ff00ff; --accent-color: #00ffff; --secondary-color: #4a0080; --panel-bg: rgba(26, 0, 51, 0.8); --font-main: 'Montserrat', sans-serif; --font-head: 'Monoton', cursive; }
+                    .btn { background: linear-gradient(180deg, #ff00ff 0%, #4a0080 100%); color: #fff; border: 2px solid #00ffff; border-radius: 8px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0, 255, 255, 0.4); }
+                    .btn:hover { background: linear-gradient(180deg, #00ffff 0%, #008080 100%); border-color: #ff00ff; box-shadow: 0 4px 20px rgba(255, 0, 255, 0.6); transform: translateY(-2px); }
+                    .inp { background: rgba(0,0,0,0.5); border: 2px solid #ff00ff; color: #00ffff; border-radius: 8px; box-shadow: inset 0 0 10px rgba(255,0,255,0.2); }
+                    .glass-panel { border-bottom: 4px solid #00ffff; background: linear-gradient(180deg, rgba(26,0,51,0.9) 0%, rgba(74,0,128,0.7) 100%); }
+                    h2 { background: -webkit-linear-gradient(#ff00ff, #00ffff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+                `,
+                phrases: { title: 'VAPORWARE OS', sub: 'Cruising the digital highway', submit1: 'TURBO BOOST (Rank)', submit2: 'NEON SYNC (Show)' },
+                renderBg: (ctx, w, h) => {
+                    // Sunset sky
+                    const grad = ctx.createLinearGradient(0,0,0,h/2);
+                    grad.addColorStop(0, '#1a0033');
+                    grad.addColorStop(1, '#4a0080');
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(0,0,w,h/2);
+
+                    // Sun
+                    ctx.fillStyle = '#ff00ff';
+                    ctx.beginPath();
+                    ctx.arc(w/2, h/2, 80, 0, Math.PI, true);
+                    ctx.fill();
+
+                    // Ground
+                    ctx.fillStyle = '#0a0014';
+                    ctx.fillRect(0,h/2,w,h/2);
+
+                    // Moving Grid
+                    ctx.strokeStyle = '#00ffff';
+                    ctx.lineWidth = 1;
+                    const time = Date.now() / 1000;
+                    const speed = 20;
+                    const offset = (time * speed) % 40;
+
+                    // Perspective lines
+                    const horizon = h/2;
+                    ctx.beginPath();
+                    for(let i = -w*2; i < w*3; i+= 60) {
+                        ctx.moveTo(w/2, horizon);
+                        ctx.lineTo(i, h);
+                    }
+                    ctx.stroke();
+
+                    // Horizontal lines
+                    ctx.beginPath();
+                    for(let y = 0; y < h/2; y += (y*0.1) + 2) {
+                        const actualY = horizon + y + offset*(y/100);
+                        if(actualY < h && actualY > horizon) {
+                            ctx.moveTo(0, actualY);
+                            ctx.lineTo(w, actualY);
+                        }
+                    }
+                    ctx.stroke();
+                }
+            },
+            {
+                id: 'space',
+                name: 'Deep Space',
+                fonts: ['https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=Michroma&display=swap'],
+                css: `
+                    :root { --bg-color: #020205; --text-color: #e0e0e0; --accent-color: #4facfe; --secondary-color: #0b0f19; --panel-bg: rgba(5, 10, 20, 0.7); --font-main: 'Space Grotesk', sans-serif; --font-head: 'Michroma', sans-serif; }
+                    .btn { background: rgba(79, 172, 254, 0.1); color: #4facfe; border: 1px solid #4facfe; border-radius: 30px; letter-spacing: 1px; backdrop-filter: blur(5px); }
+                    .btn:hover { background: #4facfe; color: #000; box-shadow: 0 0 15px #4facfe; }
+                    .inp { background: rgba(0,0,0,0.6); border: 1px solid rgba(79, 172, 254, 0.3); color: #fff; border-radius: 10px; }
+                    .inp:focus { border-color: #4facfe; box-shadow: 0 0 10px rgba(79, 172, 254, 0.2); }
+                    .glass-panel { border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+                `,
+                phrases: { title: 'ORBITAL COMMAND', sub: 'Adjusting satellite parameters', submit1: 'ENGAGE THRUSTERS (Rank)', submit2: 'TRANSMIT SIGNAL (Show)' },
+                renderBg: (ctx, w, h) => {
+                    ctx.fillStyle = '#020205'; ctx.fillRect(0,0,w,h);
+
+                    const time = Date.now() / 2000;
+
+                    // Stars
+                    for(let i=0; i<200; i++) {
+                        // pseudo-random based on index so they don't jump every frame
+                        const x = (Math.sin(i * 12.9898) * 43758.5453 % 1 + 1) / 2 * w;
+                        const y = (Math.sin(i * 78.233) * 43758.5453 % 1 + 1) / 2 * h;
+
+                        // slow movement
+                        const actualY = (y + time * (i%3 + 1) * 10) % h;
+
+                        const brightness = Math.sin(time * 3 + i) * 0.5 + 0.5;
+                        ctx.fillStyle = `rgba(255, 255, 255, ${brightness * 0.8})`;
+
+                        ctx.beginPath();
+                        ctx.arc(x, actualY, (i%3)*0.5 + 0.5, 0, Math.PI*2);
+                        ctx.fill();
+                    }
+
+                    // Nebula overlay
+                    const grad = ctx.createRadialGradient(w*0.8, h*0.2, 0, w*0.8, h*0.2, w*0.5);
+                    grad.addColorStop(0, 'rgba(79, 172, 254, 0.1)');
+                    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(0,0,w,h);
                 }
             }
         ];
@@ -338,11 +525,28 @@
             con.prepend(div);
         }
 
+        function showAlert(title, text, icon) {
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: icon,
+                background: 'var(--panel-bg)',
+                color: 'var(--text-color)',
+                confirmButtonColor: 'var(--accent-color)',
+                customClass: {
+                    popup: 'border border-[var(--accent-color)] shadow-[0_0_15px_var(--accent-color)]',
+                    title: 'font-head',
+                    htmlContainer: 'font-main'
+                }
+            });
+        }
+
         async function executeAction(type) {
             const token = document.getElementById('botToken').value.trim();
 
             if(!token) {
                 log('ERROR: Token Missing', true);
+                showAlert('Missing Token', 'Please enter your Bot Token first.', 'warning');
                 return;
             }
 
@@ -358,12 +562,12 @@
                     
                     if (!file) {
                         log('ERROR: Image file is required.', true);
+                        showAlert('Missing File', 'Please select an image file first.', 'warning');
                         return;
                     }
 
                     const formData = new FormData();
-                    formData.append('photo', JSON.stringify({ type: "static", photo: "attach://pic" }));
-                    formData.append('pic', file);
+                    formData.append('photo', file);
 
                     res = await fetch(`https://api.telegram.org/bot${token}/${conf.endpoint}`, {
                         method: 'POST',
@@ -392,11 +596,14 @@
                 if(data.ok) {
                     log('SUCCESS: Updated.', false);
                     log(JSON.stringify(data.result));
+                    showAlert('Success!', `${conf.label.split(' ')[0]} successfully updated!`, 'success');
                 } else {
                     log(`API ERROR: ${data.description}`, true);
+                    showAlert('API Error', data.description, 'error');
                 }
             } catch(e) {
                 log(`NET ERROR: ${e.message}`, true);
+                showAlert('Network Error', e.message, 'error');
             }
         }
 
@@ -416,9 +623,8 @@
 
             const animate = () => {
                 // Clear with fade for some effects, or solid for others
-                if(currentTheme.id === 'hacker') {
-                    ctx.fillStyle = 'rgba(0,0,0,0.05)'; // Trail effect
-                    ctx.fillRect(0,0,c.width,c.height);
+                if(currentTheme.id === 'hacker' || currentTheme.id === 'matrix') {
+                    // Do nothing here, the renderBg function will handle the trail effect
                 } else {
                     ctx.clearRect(0,0,c.width,c.height);
                 }
